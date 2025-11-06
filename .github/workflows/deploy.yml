@@ -30,7 +30,7 @@ jobs:
 
       - name: Set base for GitHub Pages
         run: |
-          node -e "const fs=require('fs');const p=require('./package.json');p.homepage=process.env.GITHUB_REPOSITORY?`https://$${process.env.GITHUB_REPOSITORY.split('/')[0]}.github.io/$${process.env.GITHUB_REPOSITORY.split('/')[1]}/`:p.homepage;fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
+          node -e 'const fs=require("fs"); const p=require("./package.json"); const repo=process.env.GITHUB_REPOSITORY||""; if(repo){ const parts=repo.split("/"); const owner=parts[0]; const name=parts[1]; p.homepage=`https://${owner}.github.io/${name}/`; } fs.writeFileSync("package.json", JSON.stringify(p, null, 2));'
 
       - name: Build
         run: npm run build
